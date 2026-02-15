@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+  <meta name="keywords" content="template, sample, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FIM Classification Analysis</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon_heatmap.PNG">
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">FIM Classification Analysis</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              Seunga Ha<sup>1</sup> and
+            </span>
+            <span class="author-block">
+              Handeul Choi<sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Ghent University Global Campus</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="content has-text-justified">
+  <p>
+   This project investigates how training choices shape model behavior in FIM-based protein particle classification. Instead of treating performance as a single score, we evaluate fifteen experimental configurations to identify what the model reliably uses as evidence. By combining class-wise metrics with robustness profiling under seven controlled transformations, we highlight stable morphological strengths and persistent failure modes. These results provide interpretable insights into which attributes—shape, texture, or context—drive classification, guiding the development of more robust biopharmaceutical classifiers.
+  </p>
+</div>
+</div> 
+</section>
+  
+<!-- ===================== MODEL & TRAINING ===================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-2 has-text-centered section-title">Training and Optimization</h2>
+
+    <div class="box section-box">
+
+      <!-- Task Overview -->
+      <h3 class="title is-4 has-text-centered subblock-title">Task Overview</h3>
+      <div class="content has-text-justified readable-content">
+  <p>
+    We train a deep learning classifier to classify protein sub-visible particles into 
+    <strong>five distinct categories (mAb1–mAb5)</strong> from FIM images. To address the challenge of 
+    high inter-class similarity, the dataset is partitioned into 
+    <strong>training, validation, and test sets</strong>. The model is then trained using 
+    dynamic augmentations specifically designed to promote generalizable feature learning.
+  </p>
+  <p>
+    Model selection is driven by <strong>macro-averaged F1, precision, and recall</strong>, and is further complemented by 
+    <strong>detailed class-wise analysis</strong>. This dual approach ensures that the chosen configuration performs consistently across all classes, preventing the model from being dominated by a small subset of more easily identifiable categories.
+  </p>
+</div>
+
+
+      <hr class="soft-divider">
+
+      <!-- Optimization -->
+      <h3 class="title is-4 has-text-centered subblock-title">Optimization of Model Configuration</h3>
+     <div class="content has-text-justified readable-content">
+  <p>
+    To identify an effective configuration for protein particle classification, we conducted a comprehensive evaluation of 
+    approximately <strong>fifteen distinct experimental setups</strong>. Each setup was carefully designed by varying 
+    <strong>image normalization strategies, transformation pipelines, and training configurations</strong> in order to isolate the impact of individual design choices.
+  </p>
+  <p>
+    Rather than relying solely on global performance averages, the selection process was guided by a holistic analysis of 
+    class-wise behavior. Classification performance was examined independently for each antibody class 
+    (mAb1 through mAb5), allowing us to compare relative trends in confidence, stability, and consistency across configurations.
+  </p>
+
+  <figure class="image has-text-centered">
+    <img src="./static/images/heatmap.png"
+         alt="Class-wise model response heatmap"
+         style="width: 70%; height: auto;">
+    <figcaption class="figure-caption">
+      <span class="caption-label">Figure 1.</span>
+      Class-wise correct classification rates (mAb1–mAb5) on the best test run.
+    </figcaption>
+  </figure>
+
+  <p>
+    The most effective configuration demonstrated consistently strong behavior across all major evaluation criteria. This outcome is particularly notable given the intrinsic inter-class similarity of protein particles. The success of this configuration is primarily attributed to a training strategy that emphasized 
+    spatial diversity through variations in image size and orientation.
+  </p>
+  <p>
+    By exposing the model to these controlled spatial transformations, the training process encouraged the development of more 
+    <strong>generalized feature representations</strong>, enabling reliable classification across diverse particle morphologies. The resulting focus of the model is further illustrated through qualitative visualization, such as <strong>class-wise heatmaps</strong>.
+  </p>
+</div>
+
+
+
+      <hr class="soft-divider">
+
+      <!-- Key Observations -->
+      <h3 class="title is-4 has-text-centered subblock-title">Key Observations</h3>
+      <div class="content has-text-justified readable-content">
+        <p>
+          Analysis of the best-performing configuration revealed a consistent hierarchy in class-level behavior. Certain antibody classes demonstrated comparatively stronger and more stable responses, while others repeatedly exhibited weaker performance trends. This pattern was observed not only in the optimal configuration, but also as a <strong>general tendency</strong> across the majority of experimental setups.
+        </p>
+        <p>
+          These observations indicate that <strong>model difficulty is not uniformly distributed across classes</strong>. Instead, specific antibody categories present persistent challenges that are resistant to changes in training configuration. Such consistency highlights the importance of class-aware analysis when evaluating model behavior.
+        </p>
+        <p>
+          The combination of spatial diversity and background control effectively stabilizes performance. Such results confirm that the model is learning fundamental invariants, effectively bypassing the common pitfalls of orientation- and scale-dependent shortcuts.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== FACTORS (AUG + INSIGHTS) ===================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-2 has-text-centered section-title">Augmentation Sensitivity to Particle Insights</h2>
+
+    <div class="box section-box">
+
+      <!-- Augmentation -->
+      <h3 class="title is-4 has-text-centered subblock-title">Augmentation Sensitivity–Robustness Profiling</h3>
+
+      <div class="content has-text-justified readable-content">
+        <p>
+         We evaluate the classification robustness of <strong>five protein particle categories</strong> (mAb1–mAb5) by subjecting them to <strong>seven controlled image transformations</strong>: color, flip, sharpness, background, size, luminance, and pattern. This profiling measures the "Sensitivity Score" for each class, identifying whether the model relies on the intrinsic morphology of a particle or is influenced by external environmental factors. A higher sensitivity score indicates that a class is more vulnerable to environmental perturbations, suggesting the model lacks a stable representation for that specific particle type.
+        </p>
+        <p>
+          The results reveal a clear hierarchy of model stability across the different antibody classes. <strong>mAb1</strong> exhibits the highest level of sensitivity, affected by six out of seven factors, which indicates a heavy reliance on specific experimental conditions rather than the particle's physical identity. In contrast, classes such as <strong>mAb3</strong> and <strong>mAb5</strong> show significantly lower sensitivity scores, demonstrating that the model has captured more <strong>invariant features</strong> for these particles, allowing them to remain stable across geometric and optical shifts.
+        </p>
+
+        <div style="margin-top: 2.0rem;"></div>
+
+        <div class="columns is-centered">
+          <div class="column is-10 has-text-centered">
+            <figure class="image">
+              <img src="./static/images/augprofile.png"
+                   alt="Augmentation sensitivity-robustness profiles"
+                   style="width: 100%; max-width: none; height: auto; border-radius: 8px;">
+              <figcaption class="figure-caption">
+                <span class="caption-label">Figure 2.</span>
+                This chart quantifies the vulnerability of each mAb class across seven image transformations. The Net Score represents cumulative model sensitivity to environmental artifacts rather than stable morphological features.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <hr class="soft-divider">
+
+      <!-- Insights -->
+      <h3 class="title is-4 has-text-centered subblock-title">Particle Characterization Insights</h3>
+
+      <div class="content readable-content">
+        <p class="has-text-justified">
+          Based on the sensitivity patterns observed across the seven transformation factors, we categorize the <strong>five antibody classes</strong> into <strong>three distinct groups</strong>. This classification maps model behavior to the likely physical attributes of the protein particles, providing an interpretable link between deep learning performance and particle morphology.
+        </p>
+
+        <div class="table-container">
+          <table class="table is-fullwidth is-striped is-hoverable insights-table">
+            <thead>
+              <tr>
+                <th style="width: 18%;">Group</th>
+                <th style="width: 20%;">Label</th>
+                <th style="width: 18%;">mAbs</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Group 1</strong></td>
+                <td>Shape-Dominant (Robust)</td>
+                <td><strong>mAb3</strong> (+2), <strong>mAb5</strong> (+2)</td>
+                <td>
+                  These classes exhibit the <strong>lowest sensitivity scores</strong>, maintaining <strong>high classification stability</strong> across most perturbations. This suggests that the model has successfully identified rigid, invariant morphological "fingerprints" for these particles. Their identification is likely driven by distinct boundary shapes or structural features that remain recognizable even when lighting or sharpness is altered.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Group 2</strong></td>
+                <td>Optically-Sensitive (Intermediate)</td>
+                <td><strong>mAb2</strong> (+5), <strong>mAb4</strong> (+5)</td>
+                <td>
+                  These classes show significant vulnerability to optical transformations, particularly luminance and color. The <strong>high sensitivity to light-based factors</strong> implies that these particles are likely highly transparent or possess delicate internal textures (low-contrast aggregates). The model relies heavily on pixel intensity gradients, making them susceptible to misclassification if imaging conditions deviate from the training baseline.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Group 3</strong></td>
+                <td>Environmentally Bound (Fragile)</td>
+                <td><strong>mAb1</strong> (+6)
+                <td>
+                  Representing the highest level of vulnerability, this class is sensitive to nearly all tested factors, including background noise and scaling. The model likely relies on <strong>"shortcuts"</strong>—environmental artifacts such as specific background textures or imaging blur—rather than the intrinsic morphology of the particle itself.
+                </td>
+              </tr>
+      
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== CONCLUSION ===================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-2 has-text-centered section-title">Conclusion</h2>
+
+    <div class="content has-text-justified">
+      <p>
+        Our analysis confirms that classification robustness is strongly class-dependent. Particles with distinct morphological "fingerprints," such as mAb3 and mAb5, remain stable across perturbations, while ambiguous classes like mAb1 are more vulnerable to shifts in luminance and orientation. By evaluating various image normalization and transformation pipelines, we found that emphasizing spatial diversity effectively encourages the model to learn fundamental invariants rather than scale-dependent shortcuts. This profiling framework identifies where the model relies on intrinsic features versus environmental artifacts, enabling targeted improvements for reliable particle identification.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===================== REFERENCES ===================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-2 has-text-centered section-title">References and Data Sources</h2>
+
+    <div class="content has-text-justified">
+     <p>
+  1. Ozbulak, U.; Cohrs, C.; Maeder, K.; and Passos, N. “Improved Sub-visible Particle Classification in Flow Imaging Microscopy via Generative AI-based Image Synthesis.” 
+  <em>arXiv</em> (2025). https://doi.org/10.48550/arXiv.2502.04230
+</p>
+<p>
+  2. Cohrs, M.; Koak, S.; Lee, Y.; Sung, Y. J.; De Neve, W.; Svilenov, H. L.; and Ozbulak, U. “Color Flow Imaging Microscopy Improves Identification of Stress Sources of Protein Aggregates in Biopharmaceuticals.” 
+  In <em>International Workshop on Medical Optical Imaging and Virtual Microscopy Image Analysis</em> (pp. 86-96). Cham: Springer Nature Switzerland (2024).
+</p>
+<p>
+  3. Lee, H.; Ozbulak, U.; Park, H.; et al. “Assessing the Reliability of Point Mutation as Data Augmentation for Deep Learning with Genomic Data.” 
+  <em>BMC Bioinformatics</em> 25, no. 170 (2024). https://doi.org/10.1186/s12859-024-05787-6
+</p>
+<p>
+  4. Nakae, T.; Maruyama, S.; Ogawa, T.; Hasegawa, S.; Obana, M.; and Fujio, Y. “Application of One-class Classification Using Deep Learning Technique Improves the Classification of Subvisible Particles.” 
+  <em>Journal of Pharmaceutical Sciences</em> 114, no. 2 (2025): 1117-1124.
+</p>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer footer-compact custom-footer">
+  <div class="container">
+    <div class="content has-text-centered is-size-6">
+
+      <p class="footer-title">
+        <strong>FIM Classification Analysis</strong>
+      </p>
+
+      <p class="footer-subtitle">
+        Model training and augmentation-based analysis for robust and interpretable
+        FIM protein particle classification
+      </p>
+
+      <div class="footer-divider"></div>
+
+      <p class="footer-affiliation">
+        -<br>
+        <strong>Ghent University Global Campus (GUGC)</strong><br>
+        Research Center 4 (RC4): <em>Center for Biosystems and Biotech Data Science</em>
+      </p>
+
+      <p class="footer-credit">
+        Page template adapted from
+        <a href="https://utkuozbulak.github.io/cds_301_template_website/"
+           target="_blank" rel="noopener">
+          CDS 301 Template Website
+        </a>
+        and the
+        <a href="https://github.com/nerfies/nerfies.github.io"
+           target="_blank" rel="noopener">
+          Nerfies project site
+        </a>.
+      </p>
+
+    </div>
+  </div>
+</footer>
+
+
+
+</body>
+</html>
